@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +18,5 @@ Route::get('/', function () {
 Route::get('/firebase', "FirebaseController@main");
 //Route::get('/ganjilgenap', "GanjilGenapController@main");
 Route::any('/ganjilgenap', 'GanjilGenapController@main');
+Route::any('/testingroute', 'FirebaseController@main');
 
