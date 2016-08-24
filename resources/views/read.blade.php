@@ -45,4 +45,6 @@
   <left>
 	<a href="{{ URL('logout')}}">Logout</a>
   </left>
+ 
+  
 @stop

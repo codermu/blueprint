@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
 use DB;
+use Hash;
 use Redirect;
 use View;
 use Auth;
@@ -15,6 +16,7 @@ use Session;
 
 class Crudcontroller extends Controller
 {
+	
    public function cekhakakses(){
    	$this->ceklogin();
    	if (Auth::user()->hak_akses!='admin'){
@@ -150,5 +152,22 @@ class Crudcontroller extends Controller
    	$this->ceklogin();
        return view('user');
 	   
+   }
+   public function ubahpassword($username)
+   {
+   	   $data['id'] =  Auth::user()->id;
+	   return View::make('ubah_password', compact('data'));
+	   // $data= DB::table('login')->where('username','=',$username)->first();
+	   // return View::make('ubah_passwword')-> with('login',$data);
+   }
+   
+   public function prosesubah(Request $request)
+   {
+	   	  $data = array(
+	   		'password' => bcrypt(Input::get('repas')),
+	   		);
+	   
+	  	    DB::table('login')->where('id','=',Input::get('id'))->update($data);
+	   		return Redirect::to('/login')->with('message','Password telah diganti,silahkan login kembali');	
    }
 }

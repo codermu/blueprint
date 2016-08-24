@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="container">
-@if(Session::has('pesan'))
+@if(Session::has('message'))
  <span class="label label-success">{{ Session::get('message') }}</span>
 @endif
 <form method="post" action="{{url('/prosesedit')}}">
