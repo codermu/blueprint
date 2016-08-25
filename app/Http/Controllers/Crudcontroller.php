@@ -127,7 +127,7 @@ class Crudcontroller extends Controller
 		}
 	   }
 		else {
-			echo "gagal login";
+			return Redirect::to ('/login')->with ('message','Username atau password anda salah');
 	}
 		
 		
@@ -155,19 +155,31 @@ class Crudcontroller extends Controller
    }
    public function ubahpassword($username)
    {
-   	   $data['id'] =  Auth::user()->id;
+   	   $id_user =  Auth::user()->id;
+	   $data = DB::table('login')->where('id','=',$id_user)->get();
 	   return View::make('ubah_password', compact('data'));
-	   // $data= DB::table('login')->where('username','=',$username)->first();
-	   // return View::make('ubah_passwword')-> with('login',$data);
    }
    
    public function prosesubah(Request $request)
    {
-	   	  $data = array(
-	   		'password' => bcrypt(Input::get('repas')),
+   			$id_user = Auth::user()->id;
+   			$data = DB::table('login')->where('id','=',$id_user)->get();
+			
+			if(!Hash::check($request->password,$data[0]->password)){
+				$this-> ubahpassword('username');
+				return Redirect::to('/ubahpassword/'. $data[0]->username)->with('message','Password Lama Salah');
+			}
+			
+		    if(Input::get('newpas')==Input::get('repas')){
+		   $data = array(
+	   		'password' => bcrypt(Input::get('newpas'))
 	   		);
 	   
 	  	    DB::table('login')->where('id','=',Input::get('id'))->update($data);
 	   		return Redirect::to('/login')->with('message','Password telah diganti,silahkan login kembali');	
+	   	  	} else {
+	   	  		$this-> ubahpassword('username');
+	   			return Redirect::to('/ubahpassword/'. $data[0]->username)->with('message','konfirmasi Password Tidak Sama, Silahkan Ulangi');	
+	   		}	
    }
 }

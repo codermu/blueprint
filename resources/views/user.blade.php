@@ -3,8 +3,5 @@
 @endif
 <p></p>
 Selamat Datang {{Auth::user()->username}} <br>
-Silahkan Lihat Data <a href='/viewuser'/> Kesini </a><br>
-<a href="{{ URL('logout')}}">Logout</a>
- <right>
-  	<a href="ubahpassword/{{Auth::user()->username}}">ubah password</a>
-  </right>
+Silahkan Lihat Data <a href='/viewuser'/> Kesini</a><br>
+<a href="{{ URL('logout')}}">Logout</a>  ||  <a href="ubahpassword/{{Auth::user()->username}}">ubah password</a>

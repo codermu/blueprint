@@ -8,6 +8,7 @@
 
 <p></p>
   <table cellspacing="3" cellpadding="5" align="center" class="table-info">
+  	{{csrf_field()}}
     <tr>
       <th>ID</th>
       <th>Name</th>
