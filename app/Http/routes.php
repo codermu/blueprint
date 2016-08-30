@@ -45,9 +45,16 @@ Route::post('login', 'Crudcontroller@login');
 Route::get('user', 'Crudcontroller@userhomepage');
 Route::get('logout', 'Crudcontroller@logout');
 Route::get('activate/{activation_key}', 'Crudcontroller@activate');
+
+
 // Route::get('forget_password', 'Crudcontroller@forget_password');
-Route::get('forget_password', function () {
-	 return view('forget_password');
-});
-Route::get('ubahpassword/{username}', 'Crudcontroller@ubahpassword');
+Route::get('ubahpassword', 'Crudcontroller@ubahpassword');
 Route::post('prosesubah', 'Crudcontroller@prosesubah');
+
+
+Route::get('forgetpas', 'Crudcontroller@forgetpas');
+Route::post('prosesresetpass', 'Crudcontroller@prosesresetpass');
+Route::get('resetpas', 'Crudcontroller@resetpassss');
+Route::get('resetpas/{reset_key}', 'Crudcontroller@resetpas');
+Route::post('ganti' , 'Crudcontroller@ganti');
+

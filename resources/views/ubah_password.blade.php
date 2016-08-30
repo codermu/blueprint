@@ -6,7 +6,7 @@
 @endif
 <form method="post" action="{{url('/prosesubah')}}">
     {{csrf_field()}}
-      <input type="hidden" name="id" value="{{ $data[0]->id }}">
+      <input type="hidden" name="id" value="">
       old Password:
       <input type="password" name="password" placeholder="masukan password lama" class="form-control"><br>
       new password:
