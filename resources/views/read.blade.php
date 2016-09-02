@@ -20,11 +20,11 @@
     @foreach ($siswa as $data)
     <?php 
       if ($no % 2 == 0) {
-        $warna = '#29B6F6';
+        $warna = 'cornflowerblue';
         $war = 'white';
       } else {
-        $warna = '#FF4081';
-        $war = 'white';
+        $warna = 'white';
+        $war = 'cornflowerblue';
       }
     ?>
     <tr style=" background-color:{{$warna}}; color:{{$war}} ">
@@ -33,15 +33,49 @@
       <td>{{$data -> alamat}}</td>
       <td>{{$data -> kelas}}</td>
       <td> 
-        <a href="hapus/{{ $data->id}}" style=" background-color:{{$warna}}; color:{{$war}} " class="link-table">Hapus</a> || 
-        <a href="formedit/{{ $data->id}}" style=" background-color:{{$warna}}; color:{{$war}} " class="link-table"> Edit </a>
+        <a href="delete/{{ $data->id}}" onclick="return confirm('Are your sure want delete this data?')" style=" background-color:{{$warna}}; color:{{$war}} " class="link-table">Hapus</a> || 
+        <a href="form-edit/{{ $data->id}}" style=" background-color:{{$warna}}; color:{{$war}} " class="link-table"> Edit </a>
       </td>
     </tr>
     @endforeach
   </table>
+  	<center>
+  		{!! $siswa->render() !!} <br>
+  		<a href="{{url('/home')}}" class="link-text"> Silahkan masukan data disini</a>
+  	</center>
+  	<p></p>
+  <table cellspacing="3" cellpadding="5" align="center" class="table-info">
+  		<tr>
+  			<th> No </th>
+  			<th> ID </th>
+  			<th> Username </th>
+  			<th> Email</th>
+  			<th> Status </th>
+  			<th> Other </th>
+  		</tr>
+	  	<?php $ni=1; ?>
+	  	@foreach($login as $data2)
+	  	<?php 
+	      if ($ni % 2 == 0) {
+	        	$warni = 'cornflowerblue';
+        		$wari = 'white';
+      		} else {
+        		$warni = 'white';
+        		$wari = 'cornflowerblue';
+	      }
+	    ?>
+  		<tr style=" background-color:{{$warni}}; color:{{$wari}} ">
+      		<td>{{$ni++}}</td>
+      		<td>{{$data2 -> id}}</td>
+      		<td>{{$data2-> username}}</td>
+      		<td>{{$data2 -> email}}</td>
+      		<td>{{$data2 -> status}}</td>
+      		<td> <a href="admin-change/{{ $data2->id}}" style=" background-color:{{$warni}}; color:{{$wari}} " class="link-table"> Change Password </a></td>
+  		</tr>
+  		@endforeach
+  </table>
   <center>
-  		{!! $siswa->render() !!}<br>
-  		<a href="{{url('/home')}}">silahkan masukan data disini</a>
+  		{!! $login->render() !!} <br>
   </center>
   <left>
 	<a href="{{ URL('logout')}}">Logout</a>

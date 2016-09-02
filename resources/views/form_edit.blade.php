@@ -5,7 +5,7 @@
 @if(Session::has('message'))
  <span class="label label-success">{{ Session::get('message') }}</span>
 @endif
-<form method="post" action="{{url('/prosesedit')}}">
+<form method="post" action="{{url('/edit-data')}}">
     {{csrf_field()}}
       <input type="hidden" name="id" value="{{$siswa->id}}">
       Nama:

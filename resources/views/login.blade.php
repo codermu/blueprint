@@ -26,7 +26,7 @@
 			@endif
 		<input type="password" name="password" placeholder="Password" class="form-control"><p></p>
 		<a href="{{ URL('/register') }}" class="link-reg">Sign Up</a> || 
-		<a href="{{ URL('/forgetpas')}}" class="link-reg">Forget password </a> <p></p> 
+		<a href="{{ URL('/forget-pas')}}" class="link-reg">Forget password </a> <p></p> 
 		<p></p>
 		
 		<input type="submit" value="Login" class="btn-danger"/>

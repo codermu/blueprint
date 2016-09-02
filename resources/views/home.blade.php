@@ -2,7 +2,7 @@
 @section('content')
 
 
-<form method="POST" action="{{url('/tambahdata')}}">
+<form method="POST" action="{{url('/add-data')}}">
 	{{csrf_field()}}
 		Nama : <input type="text" name="nama" class="form-control"/> <br>
 		Alamat :

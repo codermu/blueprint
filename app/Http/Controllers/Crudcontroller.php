@@ -20,8 +20,8 @@ use App\Models\siswa;
 class Crudcontroller extends Controller
 {
 	
-   public function cekHakAkses(){
-   	$this->ceklogin();
+   public function checkAccesAccount(){
+   	$this->cekLogin();
    	if (Auth::user()->hak_akses!='admin'){
        		echo 'You can not access this page. please  <a href="/user"> click here </a> '; 
 	   		die();	
@@ -30,14 +30,13 @@ class Crudcontroller extends Controller
    public function cekLogin()
    {
    		$login_status = Session::get('login_status');
-		// var_dump($login_status);
-   		if ($login_status=='loggedout'){
+		if ($login_status=='loggedout'){
        		echo 'login <a href="/login"> please  </a> '; 
 	   		die();	
 	  }
        
    }
-   public function tambahdata()
+   public function addData()
    {
        $data = array(
 	   	'nama' => Input::get('nama'),
@@ -49,12 +48,14 @@ class Crudcontroller extends Controller
 	   return Redirect::to('/read')->with('message','Input data success');
    }
    
-   public function lihatdata()
+   public function readData()
    {
-        $this->cekhakakses();
+        $this->checkAccesAccount();
 		
-	   	$data=DB::table('siswa') ->paginate(5);
-	   	return View::make('read')-> with('siswa',$data);
+	   	$siswa=DB::table('siswa') ->paginate(5);
+	   	$login=DB::table('login') ->paginate(5);
+	   	return View::make('read', compact('siswa','login'));
+	   	
 	   
    }
    
@@ -65,24 +66,24 @@ class Crudcontroller extends Controller
 	   	return View::make('view')-> with('siswa',$data);
    }
    
-   public function hapusdata($id)
+   public function deleteData($id)
    {
-   		$this->cekhakakses();
+   		$this->checkAccesAccount();
        	
        	
        	DB::table('siswa') ->where ('id','=',$id)->delete();
 	    return Redirect::to('/read')->with('message','Data has been Deleted');
    }
    
-   public function editdata($id)
+   public function editData($id)
    {
-   	   	$this->cekhakakses();
+   	   	$this->checkAccesAccount();
 		
        	$data = siswa::find($id);
        	return View::make('/form_edit')-> with('siswa',$data);
    }
    
-   public function proseseditdata()
+   public function editDataProcess()
    {
         $data = array(
 	   	'nama' 		=> Input::get('nama'),
@@ -94,7 +95,7 @@ class Crudcontroller extends Controller
 	   return Redirect::to('/read')->with('message','Data has been Changed');
    }
    
-   public function tambahlogin(Request $request)
+   public function addLog(Request $request)
    {
    	   $this->validate($request, [
    		'email'    => 'required|unique:login|email',
@@ -109,6 +110,7 @@ class Crudcontroller extends Controller
        		'username'			=> Input::get ('username'),
        		'password'  		=> bcrypt(Input::get('password')),
        		'hak_akses' 		=> 'user',
+       		'status'			=> 'safe',
        		'activation_key' 	=> $activation_key,
        		'activation_status' => 'notactive'
        		
@@ -117,14 +119,7 @@ class Crudcontroller extends Controller
    
 	DB::table('login')->insert($data);
    
-   	// $to=Input::get('email');
-	// $subject='festiware account activation';
-	// $msg = 'please activate your account via this link http://festiware.com/activate/'. $activation_key;
-// 	
-	// mail($to,$subject,$msg);
-	
-	// registration 
-	$root_url='http://festiware.com';
+   	$root_url='http://festiware.com';
 	$activation_link= $root_url. '/activate/'. $activation_key ;
     $to             = Input::get('email');
     $subject        = 'festiware account activation';
@@ -144,7 +139,7 @@ class Crudcontroller extends Controller
        if(Auth::attempt(['username' => Input::get('username'),'password' =>Input::get('password')]))
 	   {
 	   	if (Auth::user()->activation_status=="notactive"){
-	   		return Redirect::to('/login')->with('message','your account cannot verification');
+	   		return Redirect::to('/login')->with('message','Your account is Unverified');
 			
 	   	} else if (Auth::user()->hak_akses=="admin"){
 	   		Session::put('login_status', 'loggedin');
@@ -156,7 +151,7 @@ class Crudcontroller extends Controller
 		}
 	   }
 		else {
-			return Redirect::to ('/login')->with ('message','Username or password is wrong');
+			return Redirect::to ('/login')->with ('message','Username or Password is Wrong');
 	}
 		
 		
@@ -171,39 +166,42 @@ class Crudcontroller extends Controller
    public function activate($activation_key="")
    {
    		if (empty($activation_key)) {
-			   return Redirect::to ('/login')-> with('message', 'Please Input Your Activation Key.');
+			   return Redirect::to ('/login')-> with('message', 'Please take your Activation key on your Email.');
 		   }else{	
 		   		$data = DB::table('login')->where('activation_key','=',$activation_key)->get();
 		       		if(empty($data)){
-		       			echo "Activation key is Not valid";
+		       			return Redirect::to('/login')->with ('message', 'Activation keys can not be found') ;
 		       		} else {
 		       			$data = array(
 						'activation_status' => 'active'
 						);
 		   				DB::table('login')->where('activation_key','=',$activation_key)->update($data);	
-		   				return Redirect::to('/login')->with ('message', 'your account has been activate,please login') ;
+		   				return Redirect::to('/login')->with ('message', 'Your account has been Activate,please Login') ;
 		      	 }
 		   }
    }
-   public function userhomepage()
+   public function userHomePage()
    {
    	$this->ceklogin();
+	if (Auth::user()->status=="block"){
+	   		return Redirect::to('/block');
+	}
        return view('user');
 	   
    }
-   public function ubahpassword()
+   public function changePassword()
    {
 	   return View::make('ubah_password', compact('data'));
    }
    
-   public function prosesubah(Request $request)
+   public function changeProcess(Request $request)
    {
    			$id_user = Auth::user()->id;
    			$data = DB::table('login')->where('id','=',$id_user)->get();
 			
 			if(!Hash::check($request->password,$data[0]->password)){
-				$this-> ubahpassword('username');
-				return Redirect::to('/ubahpassword/')->with('message','Old password is wrong');
+				$this-> changePassword('username');
+				return Redirect::to('/change-password/')->with('message','Old password is wrong');
 			}
 			
 		    if(Input::get('newpas')==Input::get('repas')){
@@ -216,23 +214,23 @@ class Crudcontroller extends Controller
 	   		return Redirect::to('/login')->with('message','Password has been changed,please login');	
 			
 	   	  	} else {
-	   	  		$this-> ubahpassword('username');
-	   			return Redirect::to('/ubahpassword/')->with('message','password combination is not the same');	
+	   	  		$this-> changePassword('username');
+	   			return Redirect::to('/change-password/')->with('message','Password combination is not same');	
 	   		}	
    }
-   public function forgetpas()
+   public function forgetPas()
    {
        return View::make('/forget_password');
    }
    
-   public function prosesresetpass()
+   public function processResetPass()
    {
       if(empty(Input::get('email'))){
-       		return Redirect::to('/forgetpas')->with('message','Data is empty,please input your email account'); 
+       		return Redirect::to('/forget-pas')->with('message','Data is empty,please input your email account'); 
        } else {
        		$data = DB::table('login')->where('email','=',Input::get('email'))->get();
        		if(empty($data)){
-       			return Redirect::to('/forgetpas')->with('message','Your account can not find');
+       			return Redirect::to('/forget-pas')->with('message','Your account can not find');
        	} else {
        			$reset_key = md5(Input::get('email').date('YMDHIS'));
 				$data = array(
@@ -240,12 +238,6 @@ class Crudcontroller extends Controller
 			    		);
 			   
 		       	DB::table('login')->where('email','=',Input::get('email'))->update($data);
-				
-				// $to=Input::get('email');
-				// $subject='festiware reset password';
-				// $msg = 'please change your password account via this link http://festiware.com/resetpas/'. $reset_key;
-// 				
-				// mail($to,$subject,$msg);
 				
 				$root_url='http://festiware.com';
 				$reset_link= $root_url. '/resetpas/'. $reset_key ; 
@@ -264,12 +256,8 @@ class Crudcontroller extends Controller
 	   }
    }
    
-   public function resetpass()
-   {
-	   return View::make('resetpas', compact('data'));
-   }
-   
-   public function resetpas($reset_key="")
+
+   public function resetPass($reset_key="")
    {
    		if (empty($reset_key)){
    			return Redirect::to('login')->with('message','Please Input Your Reset Key');
@@ -283,10 +271,10 @@ class Crudcontroller extends Controller
 		   	}
 		}	
    }
-     public function gantipas()
+     public function changePass()
 	{
 		if (Input::get('newpas')!=(Input::get('repas'))) {
-			return Redirect::to('/resetpas/'.Input::get('passkey'))->with('message', 'password combination is not the same');
+			return Redirect::to('/reset-pass/'.Input::get('passkey'))->with('message', 'password combination is not the same');
 		}
 		
 		$data = array(
@@ -296,6 +284,34 @@ class Crudcontroller extends Controller
 		 DB::table('login')->where('reset_key','=',Input::get('passkey'))->update($data);
 		 
 		return Redirect::to('/login')->with('message','Password has been changed,please login');
+	}
+	
+	public function adminChange($id)
+	{
+		$this->checkAccesAccount();
+				
+		$data = login::find($id);
+       	return View::make('/admin_password')-> with('login',$data);
+	}
+	
+	public function adminProcessPas()
+	{
+		if (empty(Input::get('newpas'))){
+			return Redirect::to('admin-change/'. input::get('id'))->with('message','Password is empty');
+		}
+		if(Input::get('newpas')==Input::get('repas')){
+			   $data = array(
+		   		'password' => bcrypt(Input::get('newpas'))
+		   		);
+		   
+	  	    DB::table('login')->where('id','=',Input::get('id'))->update($data);
+			
+	   		return Redirect::to('/read')->with('message','Password has been changed');	
+			
+	   	  	} else {
+	   	  		return Redirect::to('/admin-change/'. Input::get('id'))->with('message','Password combination is not same');	
+			}
+		
 	}
 	
 	public function send_email_using_3rd_party($template_id, $email, $subject, $message_data_container, $email_cc=""){

@@ -18,10 +18,10 @@
     @foreach ($siswa as $data)
     <?php 
       if ($no % 2 == 0) {
-        $warna = '#29B6F6';
-        $war = 'white';
+        $warna = 'white';
+        $war = 'cornflowerblue';
       } else {
-        $warna = '#FF4081';
+        $warna = 'cornflowerblue';
         $war = 'white';
       }
     ?>

@@ -9,7 +9,7 @@
 @endif
 <center>
 	<h2 class="title-reg">Masukan Data Lengkap Anda</h2>
-	<form method="post" action="{{url('/tambahlogin')}}" class="form-reg">
+	<form method="post" action="{{url('/addLog')}}" class="form-reg">
 		
 		{{csrf_field()}}
 			@if($errors->has())

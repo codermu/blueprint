@@ -5,7 +5,7 @@
 @if(Session::has('message'))
 		<span> {{ Session::get('message')}} </span>
 @endif
-<form method="post" action="{{url('/gantipas')}}">
+<form method="post" action="{{url('/change-pass')}}">
     {{csrf_field()}}
     <input type="hidden" name="passkey" value="{{ $key[0]->reset_key }}" />
       <input type="hidden" name="id" value="">
@@ -14,5 +14,5 @@
       Retype password:
       <input type="password" name="repas" placeholder="masukan ulang password baru anda" class="form-control"> <br>
       <p></p>
-      <input type="submit" value="Reser password" class="btn-danger">  
+      <input type="submit" value="Reset password" class="btn-danger">  
 </form>

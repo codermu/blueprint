@@ -21,34 +21,38 @@ Route::get('/home', function () {
 });
 Route::get('/viewuser', 'Crudcontroller@viewuser' );
 
-Route::post('tambahdata','Crudcontroller@tambahdata');
-Route::get('read','Crudcontroller@lihatdata');
-Route::get('hapus/{id}','Crudcontroller@hapusdata');
-Route::get('formedit/{id}','Crudcontroller@editdata');
-Route::post('prosesedit','Crudcontroller@proseseditdata');
+Route::post('add-data','Crudcontroller@addData');
+Route::get('read','Crudcontroller@readData');
+Route::get('delete/{id}','Crudcontroller@deleteData');
+Route::get('form-edit/{id}','Crudcontroller@editData');
+Route::post('edit-data','Crudcontroller@editDataProcess');
 
 Route::get('login', function () {
 	 return view('login');
 });
 
-Route::post('tambahlogin','Crudcontroller@tambahlogin');
+Route::post('addLog','Crudcontroller@addLog');
 Route::get('register', function () {
 	 return view('register');
 });
 	
 Route::post('login', 'Crudcontroller@login');
-Route::get('user', 'Crudcontroller@userhomepage');
+Route::get('user', 'Crudcontroller@userHomePage');
 Route::get('logout', 'Crudcontroller@logout');
 Route::get('activate/{activation_key?}', 'Crudcontroller@activate');
 
 
-Route::get('ubahpassword', 'Crudcontroller@ubahpassword');
-Route::post('prosesubah', 'Crudcontroller@prosesubah');
+Route::get('change-password', 'Crudcontroller@changePassword');
+Route::post('change-process', 'Crudcontroller@changeProcess');
 
 
-Route::get('forgetpas', 'Crudcontroller@forgetpas');
-Route::post('prosesresetpass', 'Crudcontroller@prosesresetpass');
-// Route::get('resetpas', 'Crudcontroller@resetpassss');
-Route::get('resetpas/{reset_key?}', 'Crudcontroller@resetpas');
-Route::post('gantipas' , 'Crudcontroller@gantipas');
+Route::get('forget-pas', 'Crudcontroller@forgetPas');
+Route::post('process-reset-pass', 'Crudcontroller@processResetPass');
+Route::get('reset-pass/{reset_key?}', 'Crudcontroller@resetPass');
+Route::post('change-pass' , 'Crudcontroller@changePass');
 
+Route::get('admin-change/{id}','Crudcontroller@adminChange'); 
+Route::post('admin-procces-pas','Crudcontroller@adminProcessPas');
+Route::get('block', function () {
+	 return view('block');
+});

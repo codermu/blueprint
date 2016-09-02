@@ -89,10 +89,10 @@ fieldset[disabled] .btn-danger.focus {
   padding: 6px 12px;
   margin-left: -1px;
   line-height: 1.42857143;
-  color: black;
+  color: cornflowerblue;
   text-decoration: none;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid cornflowerblue;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
@@ -110,9 +110,8 @@ fieldset[disabled] .btn-danger.focus {
 .pagination > li > a:focus,
 .pagination > li > span:focus {
   z-index: 2;
-  color: black;
-  background-color: #eee;
-  border-color: #ddd;
+  color: white;
+  background-color: cornflowerblue;
 }
 .pagination > .active > a,
 .pagination > .active > span,
@@ -123,8 +122,7 @@ fieldset[disabled] .btn-danger.focus {
   z-index: 3;
   color: white;
   cursor: default;
-  background-color: black;
-  border-color: black;
+  background-color: cornflowerblue;
 }
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,
@@ -132,10 +130,10 @@ fieldset[disabled] .btn-danger.focus {
 .pagination > .disabled > a,
 .pagination > .disabled > a:hover,
 .pagination > .disabled > a:focus {
-  color: #777;
+  color: cornflowerblue;
   cursor: not-allowed;
   background-color: #fff;
-  border-color: #ddd;
+  border-color: cornflowerblue;
 }
 .pagination-lg > li > a,
 .pagination-lg > li > span {
@@ -170,18 +168,20 @@ fieldset[disabled] .btn-danger.focus {
   border-bottom-right-radius: 3px;
 }
 .table-info{
-  background-color: #E0F7FA;
+  background-color: cornflowerblue;
   color: white;
   border-radius: 10px;
   text-align: center;
 }
 .table-info th{
-  background-color: #FFF59D;
-  color: black;
-  border-radius: 10px;
+  font-family: 'Josefin Sans', cursive;
+  background-color: turquoise;
+  color: white;
+  border-radius: 5px;
 }
 .table-info td{
-  border-radius: 10px;
+  font-family: 'Josefin Sans', cursive;	
+  border-radius: 5px;
 }
 .link-table{
   text-decoration: none;
@@ -203,6 +203,20 @@ fieldset[disabled] .btn-danger.focus {
   font-size: 50px;
   position: relative;
   top: 30px;
+}
+.link-text{
+	color: white;
+	font-family: 'Josefin Sans', cursive;
+	position:relative;
+	bottom: 8px;
+	text-decoration:none;
+	background-color:cornflowerblue;
+	padding: 10px 10px 10px 10px;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+.link-text:hover{
+	text-decoration:underline;
 }
 .form-login{
   margin-top: 15px;
