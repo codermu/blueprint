@@ -53,6 +53,9 @@ Route::post('change-pass' , 'Crudcontroller@changePass');
 
 Route::get('admin-change/{id}','Crudcontroller@adminChange'); 
 Route::post('admin-procces-pas','Crudcontroller@adminProcessPas');
-Route::get('block', function () {
-	 return view('block');
-});
+Route::get('block-user','Crudcontroller@blockUser');
+Route::get('edit-user/{id}','Crudcontroller@editUser'); 
+Route::post('user-process','Crudcontroller@userProcess');
+
+Route::get('pic-user','Crudcontroller@picUser');
+Route::post('pic-proc','Crudcontroller@picProcess');

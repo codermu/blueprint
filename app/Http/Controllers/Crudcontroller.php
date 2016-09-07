@@ -12,6 +12,7 @@ use Redirect;
 use View;
 use Auth;
 use Session;
+use File;
 
 use App\Models\login;
 use App\Models\siswa;
@@ -103,6 +104,7 @@ class Crudcontroller extends Controller
         'password' => 'required|max:16',
     ]);
 	
+	$file = $request->file('pic');
 	
        $activation_key = md5(date("Y-m-d H:i:s"));
        $data = array(
@@ -110,13 +112,16 @@ class Crudcontroller extends Controller
        		'username'			=> Input::get ('username'),
        		'password'  		=> bcrypt(Input::get('password')),
        		'hak_akses' 		=> 'user',
-       		'status'			=> 'safe',
        		'activation_key' 	=> $activation_key,
-       		'activation_status' => 'notactive'
-       		
+       		'activation_status' => 'notactive',
+       		'pic'				=> $file->getClientOriginalName()
+       
        		
    );
    
+   	
+	$file->move(public_path().'/img',$file->getClientOriginalName());
+	   
 	DB::table('login')->insert($data);
    
    	$root_url='http://festiware.com';
@@ -183,8 +188,8 @@ class Crudcontroller extends Controller
    public function userHomePage()
    {
    	$this->ceklogin();
-	if (Auth::user()->status=="block"){
-	   		return Redirect::to('/block');
+	if (Auth::user()->activation_status=="banned"){
+	   		return Redirect::to('/block-user');
 	}
        return view('user');
 	   
@@ -218,9 +223,14 @@ class Crudcontroller extends Controller
 	   			return Redirect::to('/change-password/')->with('message','Password combination is not same');	
 	   		}	
    }
+
+   public function blockUser()
+   {
+       return View::make('block');
+   }
    public function forgetPas()
    {
-       return View::make('/forget_password');
+		return View::make('/forget_password');
    }
    
    public function processResetPass()
@@ -240,7 +250,7 @@ class Crudcontroller extends Controller
 		       	DB::table('login')->where('email','=',Input::get('email'))->update($data);
 				
 				$root_url='http://festiware.com';
-				$reset_link= $root_url. '/resetpas/'. $reset_key ; 
+				$reset_link= $root_url. '/reset-pass/'. $reset_key ; 
 			    $to             = Input::get('email');
 			    $subject        = 'festiware reset password';
 			    $template_id    = "a63bcf55-d300-4f3e-a508-d4a1a178b329";
@@ -314,6 +324,57 @@ class Crudcontroller extends Controller
 		
 	}
 	
+	public function editUser($id)
+	{
+		$this->checkAccesAccount();
+				
+		$login = login::find($id);
+		$hak_akses = login::select('hak_akses')->distinct()->get();
+		$activation_status = login::select('activation_status')->distinct()->get();
+		// return $activation;
+		// return $hak_akses;
+		return View::make('edituser',compact('login','hak_akses','activation_status'));
+	}
+	
+	public function userProcess()
+	{
+		$data = array(
+		   		'username' => Input::get('username'),
+		   		'email' => Input::get('email'),
+		   		'hak_akses' => Input::get('hak_akses'),
+		   		'activation_status' => Input::get('activation_status')
+		   		);
+		   
+		   	
+	  	    DB::table('login')->where('id','=',Input::get('id'))->update($data);
+			
+	   		return Redirect::to('/read')->with('message','User has been changed');
+	}
+	
+	public function picUser(){
+			
+		$pic = login::find(Auth::user()->id);
+		return View::make('dp_change', compact('pic'));
+	}
+	
+	public function picProcess(Request $request){
+	   $file = $request->file('pic');
+	
+       $data = array(
+       		'pic'				=> $file->getClientOriginalName()
+       );
+   		
+		$old_image = DB::table('login')->select('pic')->where('id','=',Auth::user()->id)->get();
+	
+		// $photo=DB::table('login')->where('id','=',Auth::user('id'));
+		
+   		$file->move(public_path().'/img',$file->getClientOriginalName());
+		file::delete(public_path().'/img/'.$old_image[0]->pic);
+		
+		DB::table('login')->where('id','=',Input::get('id'))->update($data);
+		// return $data;
+		return Redirect::to('user')->with('message','Photo Has Ben Uploaded');
+	}
 	public function send_email_using_3rd_party($template_id, $email, $subject, $message_data_container, $email_cc=""){
         $json_string = array(
           'to' => array($email),'sub' => $message_data_container,'category' => 'test_category',

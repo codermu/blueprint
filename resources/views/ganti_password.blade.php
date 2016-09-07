@@ -10,9 +10,9 @@
     <input type="hidden" name="passkey" value="{{ $key[0]->reset_key }}" />
       <input type="hidden" name="id" value="">
       new password:
-      <input type="password" name="newpas" placeholder="masukan password baru" class="form-control"/> <br>
+      <input type="password" name="newpas" placeholder="Enter your new password" class="form-control"/> <br>
       Retype password:
-      <input type="password" name="repas" placeholder="masukan ulang password baru anda" class="form-control"> <br>
+      <input type="password" name="repas" placeholder="Retype your password" class="form-control"> <br>
       <p></p>
       <input type="submit" value="Reset password" class="btn-danger">  
 </form>

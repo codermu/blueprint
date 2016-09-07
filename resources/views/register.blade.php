@@ -9,7 +9,7 @@
 @endif
 <center>
 	<h2 class="title-reg">Masukan Data Lengkap Anda</h2>
-	<form method="post" action="{{url('/addLog')}}" class="form-reg">
+	<form method="post" action="{{url('/addLog')}}" class="form-reg" enctype="multipart/form-data">
 		
 		{{csrf_field()}}
 			@if($errors->has())
@@ -30,6 +30,9 @@
 			@endif
 		Password : 
 		<input type="password" name="password" placeholder="Password" class="form-control"><br>
+		<p></p>
+		Choose Image   
+		<input type="file" name="pic" />
 		<p></p>
 		<input type="submit" value="Register" class="btn-danger"/>
 	</form>

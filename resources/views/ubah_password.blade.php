@@ -7,12 +7,12 @@
 <form method="post" action="{{url('/change-process')}}">
     {{csrf_field()}}
       <input type="hidden" name="id" value="">
-      old Password:
-      <input type="password" name="password" placeholder="masukan password lama" class="form-control"><br>
-      new password:
-      <input type="password" name="newpas" placeholder="masukan password baru" class="form-control"/> <br>
+      Old Password:
+      <input type="password" name="password" placeholder="Enter your password" class="form-control"><br>
+      New password:
+      <input type="password" name="newpas" placeholder="Enter your new password" class="form-control"/> <br>
       Retype password:
-      <input type="password" name="repas" placeholder="masukan ulang password baru anda" class="form-control"> <br>
+      <input type="password" name="repas" placeholder="Retype your password" class="form-control"> <br>
       <p></p>
       <input type="submit" value="Ubah password" class="btn-danger">  
 </form>

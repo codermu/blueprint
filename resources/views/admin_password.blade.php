@@ -8,9 +8,9 @@
     {{csrf_field()}}
       <input type="hidden" name="id" value="{{$login->id}}">
       new password:
-      <input type="password" name="newpas" placeholder="masukan password baru" class="form-control"/> <br>
+      <input type="password" name="newpas" placeholder="Enter the new password" class="form-control"/> <br>
       Retype password:
-      <input type="password" name="repas" placeholder="masukan ulang password baru anda" class="form-control"> <br>
+      <input type="password" name="repas" placeholder="Retype password" class="form-control"> <br>
       <p></p>
-      <input type="submit" value="Reser password" class="btn-danger">  
+      <input type="submit" value="Reset password" class="btn-danger">  
 </form>

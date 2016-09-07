@@ -7,7 +7,7 @@
 	<form method="post" action="{{url('/process-reset-pass')}}" class="form-forget">
 		{{csrf_field()}}
 		<div class="form-forg">
-			Silahkan Masukan Email anda : <br>
+			Please enter your Email : <br>
 			    @if($errors->has())
 				<span>{!! $errors->first('email') !!}</span>
 				@endif
