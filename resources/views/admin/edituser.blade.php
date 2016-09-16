@@ -47,9 +47,6 @@
 		      <option value="{{ $ac->activation_status }}"> {{ $ac->activation_status }} </option>
 		    @endif
       	@endforeach 
-      <!-- <option value="active"<?php if($activation='activate') echo "selected"; ?>> active </option> -->
-      <!-- <option value="not Active"<?php if($activation='not Active') echo "selected"; ?>> not Activate </option>
-      <option value="banned"<?php if($activation='banned') echo "selected"; ?>> Banned </option> -->
       </select > <br>
 
   <br>

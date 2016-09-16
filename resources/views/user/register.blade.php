@@ -31,7 +31,7 @@
 		Password : 
 		<input type="password" name="password" placeholder="Password" class="form-control"><br>
 		<p></p>
-		Choose Image   
+		Choose Your Image profile    
 		<input type="file" name="pic" />
 		<p></p>
 		<input type="submit" value="Register" class="btn-danger"/>

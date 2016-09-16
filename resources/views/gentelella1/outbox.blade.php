@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Festiware </title>
+    <title>Gentallela Alela! | </title>
 
     <!-- Bootstrap -->
     <link href="{{ asset("assets/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css") }}" rel="stylesheet">
@@ -29,22 +29,16 @@
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form method="post" action="{{url('/login')}}" class="form-login">
-              {{csrf_field()}}
-              	<div class="msg-text"><br /><br />
-					@if(Session::has('message'))
-						<span> {{ Session::get('message')}} </span>
-					@endif
-				</div>
+            <form>
               <h1>Login Form</h1>
               <div>
-                <input type="text" name="username"  class="form-control" placeholder="Username" required="" />
+                <input type="text" class="form-control" placeholder="Username" required="" />
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" class="form-control" placeholder="Password" required="" />
               </div>
               <div>
-                <input type="submit" class="btn btn-default submit"  value="Log in">
+                <a class="btn btn-default submit" href="index.html">Log in</a>
                 <a class="reset_pass" href="#">Lost your password?</a>
               </div>
 
@@ -69,24 +63,19 @@
 
         <div id="register" class="animate form registration_form">
           <section class="login_content">
-            <form method="post" action="{{url('/addLog')}}" enctype="multipart/form-data">
-              {{csrf_field()}}
+            <form>
               <h1>Create Account</h1>
               <div>
-                <input type="text" name="username" class="form-control" placeholder="Username" required="" />
+                <input type="text" class="form-control" placeholder="Username" required="" />
               </div>
               <div>
-                <input type="email"name="email" class="form-control" placeholder="Email" required="" />
+                <input type="email" class="form-control" placeholder="Email" required="" />
               </div>
               <div>
-              	Choose Your Image
-                <input type="file" name="pic" class="form-control" required="" /> <br>
+                <input type="password" class="form-control" placeholder="Password" required="" />
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
-              </div>
-              <div>
-                <input type="submit" class="btn btn-default submit" value="Submit">
+                <a class="btn btn-default submit" href="index.html">Submit</a>
               </div>
 
               <div class="clearfix"></div>

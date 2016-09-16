@@ -12,50 +12,54 @@
 */
 
 
-Route::get('/', function () {
-	 return view('login');
+// Route::get('/', function () {
+	 // return view('new_login');
 
-});
-Route::get('/home', function () {
-	 return view('home');
-});
-Route::get('/viewuser', 'Crudcontroller@viewuser' );
+// });
+Route::get('/','AdminController@index');
+Route::get('/viewuser', 'UserController@viewuser' );
 
-Route::post('add-data','Crudcontroller@addData');
-Route::get('read','Crudcontroller@readData');
-Route::get('delete/{id}','Crudcontroller@deleteData');
-Route::get('form-edit/{id}','Crudcontroller@editData');
-Route::post('edit-data','Crudcontroller@editDataProcess');
+Route::post('add-data','AdminController@addData');
+Route::get('read','AdminController@readData');
+Route::get('user_read','UserController@readData');
+Route::get('delete/{id}','UserController@deleteData');
+Route::get('form-edit/{id}','UserController@editData');
+// Route::get('form-edit/{id}','AdminController@editData');
+Route::post('edit-data','UserController@editDataProcess');
 
-Route::get('login', function () {
-	 return view('login');
-});
-
-Route::post('addLog','Crudcontroller@addLog');
+Route::post('addLog','UserController@addLog');
 Route::get('register', function () {
 	 return view('register');
 });
 	
-Route::post('login', 'Crudcontroller@login');
-Route::get('user', 'Crudcontroller@userHomePage');
-Route::get('logout', 'Crudcontroller@logout');
-Route::get('activate/{activation_key?}', 'Crudcontroller@activate');
+Route::post('login', 'AdminController@login');
+Route::get('user', 'AdminController@userHomePage');
+Route::get('logout', 'AdminController@logout');
+Route::get('activate/{activation_key?}', 'UserController@activate');
 
 
-Route::get('change-password', 'Crudcontroller@changePassword');
-Route::post('change-process', 'Crudcontroller@changeProcess');
+Route::get('change-password', 'UserController@changePassword');
+Route::post('change-process', 'UserController@changeProcess');
 
 
-Route::get('forget-pas', 'Crudcontroller@forgetPas');
-Route::post('process-reset-pass', 'Crudcontroller@processResetPass');
-Route::get('reset-pass/{reset_key?}', 'Crudcontroller@resetPass');
-Route::post('change-pass' , 'Crudcontroller@changePass');
+Route::get('forget-pas', 'UserController@forgetPas');
+Route::post('process-reset-pass', 'UserController@processResetPass');
+Route::get('reset-pass/{reset_key?}', 'UserController@resetPass');
+Route::post('change-pass' , 'AdminController@changePass');
 
-Route::get('admin-change/{id}','Crudcontroller@adminChange'); 
-Route::post('admin-procces-pas','Crudcontroller@adminProcessPas');
-Route::get('block-user','Crudcontroller@blockUser');
-Route::get('edit-user/{id}','Crudcontroller@editUser'); 
-Route::post('user-process','Crudcontroller@userProcess');
+Route::get('admin-change/{id}','AdminController@adminChange'); 
+Route::post('admin-procces-pas','AdminController@adminProcessPas');
+Route::get('block-user','UserController@blockUser');
+Route::get('edit-user/{id}','AdminController@editUser'); 
+Route::post('user-process','AdminController@userProcess');
 
-Route::get('pic-user','Crudcontroller@picUser');
-Route::post('pic-proc','Crudcontroller@picProcess');
+Route::get('pic-user','UserController@picUser');
+Route::post('pic-proc','UserController@picProcess');
+// Route::get('template', function () {
+	 // return view('template/index');
+// });
+Route::get('/gentelella/index','ExampleController@index');
+Route::get('/gentelella/blank','ExampleController@blank');
+Route::get('/gentelella/manage','ExampleController@manage');
+Route::get('/gentelella/form','ExampleController@form');
+Route::get('/gentelella/outbox','ExampleController@outbox');

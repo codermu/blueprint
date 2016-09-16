@@ -52,7 +52,7 @@
   			<th> Email</th>
   			<th> Hak Akses </th>
   			<th> Activation Status</th>
-  			<th> Image </th>
+  			<!-- <th> Image </th> -->
   			<th> Other </th>
   		</tr>
 	  	<?php $ni=1; ?>
@@ -73,7 +73,7 @@
       		<td>{{$data2 -> email}}</td>
       		<td>{{$data2 -> hak_akses}}</td>
       		<td>{{$data2 -> activation_status}}</td>
-      		<td>  <img src=" {{ '/img/'.$data2->pic }}" class="pic-user"></td>
+      		<!-- <td>  <img src=" {{ '/img/'.$data2->pic }}" class="pic-user"></td> -->
       		<td> <a href="admin-change/{{ $data2->id}}" style=" background-color:{{$warni}}; color:{{$wari}} " class="link-table"> Change Password </a> ||
       			 <a href="edit-user/{{ $data2->id}}" style=" background-color:{{$warni}}; color:{{$wari}} " class="link-table"> Edit </a>
       		</td>

@@ -297,3 +297,20 @@ fieldset[disabled] .btn-danger.focus {
 	font-family: 'Josefin Sans', cursive;
  	text-align:center;
 }
+.user-form{
+	background-color:cornflowerblue;
+	font-family: 'Josefin Sans', cursive;
+	color:white;
+	margin-top:3%;
+	width:40%;
+	padding:3% 5% 3%;
+	border-radius:50px;
+}
+.img-user{
+	width: 80%;
+	padding:0% 0% 3%;
+}
+.user-text{
+	font-family: 'Kaushan Script', cursive;
+	font-size:27px;
+}
