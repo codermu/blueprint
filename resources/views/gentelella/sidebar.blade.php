@@ -10,8 +10,9 @@
                 <img src="images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <span>Welcome
+              	 <h2>{{Auth::user()->username}}</h2>
+                </span>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -30,6 +31,7 @@
                       <li><a href="/gentelella/form">menu #1 form</a></li>
                       <li><a href="/gentelella/outbox">menu #1 outbox</a></li>
                       <li><a href="/gentelella/blank">menu #1 blank</a></li>
+                      <li><a href="/gentelella/profile">menu #1 profile</a></li>
                     </ul>
                   </li>
               

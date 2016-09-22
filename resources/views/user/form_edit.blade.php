@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,12 +25,12 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
               
-            @include('sidebar')
+            @include('admin/sidebar')
 
           </div>
         </div>
 
-        @include('topmenu')
+        @include('admin/topmenu')
         
         <!-- page content -->
         <div class="right_col" role="main">

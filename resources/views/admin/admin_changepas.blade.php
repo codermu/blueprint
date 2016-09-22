@@ -24,12 +24,12 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
               
-            @include('sidebar')
+            @include('admin/sidebar')
 
           </div>
         </div>
 
-        @include('topmenu')
+        @include('admin/topmenu')
         
         <!-- page content -->
         <div class="right_col" role="main">
@@ -58,13 +58,16 @@
                     <!-- start form for validation -->
                     <form id="demo-form" method="post" action="{{url('/admin-procces-pas')}}" data-parsley-validate>
                       {{csrf_field()}}
-                      <input type="hidden" name="id" value="{{$login->id}}">
+                      @if(Session::has('message'))
+				 		 <span>{{ Session::get('message') }}</span>
+					  @endif <br>
+	                  <input type="hidden" name="id" value="{{$login->id}}">
                       <label for="fullname">New password:</label>
                       <input type="password" id="newpas" class="form-control" name="newpas" required />
 
                       <label for="email">Retype Password:</label>
                       <input type="password" id="repas" class="form-control" name="repas"  required />
-					  
+					  <p></p>
                           <input type="submit" class="btn btn-primary" value="Submit">
 
                     </form>

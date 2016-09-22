@@ -1,21 +1,4 @@
-<!-- @extends('isi/t_index')
-@section('content')
 
-@if(Session::has('message'))
- <span class="label label-success">{{ Session::get('message') }}</span>
-@endif
-<form method="post" action="{{url('/change-process')}}">
-    {{csrf_field()}}
-      <input type="hidden" name="id" value="">
-      Old Password:
-      <input type="password" name="password" placeholder="Enter your password" class="form-control"><br>
-      New password:
-      <input type="password" name="newpas" placeholder="Enter your new password" class="form-control"/> <br>
-      Retype password:
-      <input type="password" name="repas" placeholder="Retype your password" class="form-control"> <br>
-      <p></p>
-      <input type="submit" value="Ubah password" class="btn-danger">  
-</form> -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -41,12 +24,12 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
               
-            @include('user/sidebar')
+            @include('admin/sidebar')
 
           </div>
         </div>
 
-        @include('user/topmenu')
+        @include('admin/topmenu')
         
         <!-- page content -->
         <div class="right_col" role="main">
@@ -58,12 +41,12 @@
             </div>
             <div class="clearfix"></div>
 
-
+			
             
 
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Change User password<small>Click to validate</small></h2>
+                    <h2>Edit User <small>Click to validate</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -71,23 +54,24 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
-                    <!-- start form for validation -->
-                    @if(Session::has('message'))
-					 <span class="label label-success">{{ Session::get('message') }}</span>
+                  	@if(Session::has('message'))
+						<span>{{ Session::get('message') }}</span>
 					@endif
-                    <form id="demo-form" method="post" action="{{url('/change-process')}}" >
+					<!-- start form for validation -->
+					
+                    <form method="post" action="{{url('/add-data')}}">
                       {{csrf_field()}}
-                      <input type="hidden" name="id" value="">
-                      <label for="fullname">Password:</label>
-                      <input type="password" id="password" class="form-control" name="password" required="" />
+                      <label for="fullname">Nama:</label>
+                      <input type="text" id="fullname" class="form-control" name="nama" required />
 
-                      <label for="email">New Password:</label>
-                      <input type="password" id="newpas" class="form-control" name="newpas"  required="" />
+                      <label for="email">Alamat:</label>
+                      <input type="text"id="fullname" class="form-control" name="alamat" data-parsley-trigger="change" required/>
 					  
-					  <label for="email">Retype new Password:</label>
-                      <input type="password" id="repas" class="form-control" name="repas"  required="" />
-					  <p></p>
+					  <label for="fullname">Kelas:</label>
+                      <input type="text" id="fullname" class="form-control" name="kelas" required/>
+					  
+					      <p></p>
+                          <br/>
                           <input type="submit" class="btn btn-primary" value="Submit">
 
                     </form>

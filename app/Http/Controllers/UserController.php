@@ -24,9 +24,8 @@ class UserController extends Controller
    {
    		$login_status = Session::get('login_status');
 		if ($login_status=='loggedout'){
-       		return Redirect::to('/')-> with('message','Please, Login Again.'); 
-	   		die();	
-	  }
+       		return Redirect::to('/')->with('message','Login Please'); 
+		}
    }
    	
 	public function checkAccesAccount(){
@@ -35,6 +34,22 @@ class UserController extends Controller
        		return Redirect::to('/')-> with('message','Please, Login First');
 	   		die();	
 	  }
+   }
+	
+   public function dataSis(){
+   	return View::make('admin/add_sis');
+   }
+   
+   public function addData()
+   {
+       $data = array(
+	   	'nama' => Input::get('nama'),
+	   	'alamat' => Input::get('alamat'),
+	   	'kelas' => Input::get('kelas'),
+	   );
+	   
+	   DB::table('siswa')->insert($data);
+	   return Redirect::to('/user_read')->with('message','Input data success');
    }
    
    
@@ -45,7 +60,7 @@ class UserController extends Controller
 	   		return Redirect::to('user/block');
 	   }
 	   	$data=DB::table('siswa') ->paginate(5);
-	   	return View::make('user/view')-> with('siswa',$data);
+	   	return View::make('user/profileuser')-> with('siswa',$data);
    }
    
    public function addLog(Request $request)
@@ -72,7 +87,7 @@ class UserController extends Controller
        		'hak_akses' 		 => 'user',
        		'activation_key' 	 => $activation_key,
        		'activation_status'  => 'notactive',
-       		'pic'				 => $file->getClientOriginalName(),
+       		//'pic'				 => $file->getClientOriginalName(),
        		'activation_date_exp'=> $next_week_date,
        		'reset_date_exp'	 => $next_time
        		
@@ -80,7 +95,7 @@ class UserController extends Controller
    );
    
    	
-	$file->move(public_path().'/img',$file->getClientOriginalName());
+	//$file->move(public_path().'/img',$file->getClientOriginalName());
 	   
 	DB::table('login')->insert($data);
    
@@ -117,15 +132,9 @@ class UserController extends Controller
 		   }
    }
    
-   // public function userHomePage()
-   // {
-   	// $this->cekLogin();
-//    	
-	// if (Auth::user()->activation_status=='banned'){
-	   		// return Redirect::to('user/block');
-	// }
-       		// return View::make('/user'); 
-   // }
+   public function addUser(){
+   		return View::make('admin/add_user');	
+   }
    
    public function deleteData($id)
    {
@@ -192,27 +201,23 @@ class UserController extends Controller
    	if (Auth::user()->activation_status=="banned"){
    		return View::make('user/block');
    	}
-		return Redirect::to('/user');
+		return Redirect::to('/profileuser');
        
    }
    
    public function forgetPas()
    {
-		   	// $key = DB::table('login')->where('id','=',2)->get();
-   		    // $date_int = strtotime($key[0]->created_at);
-				// var_dump(strtotime(date('h:i')));
-				
-		return View::make('/forget_password');
+		return View::make('/user/forget_password');
    }
    
    public function processResetPass()
    {
       if(empty(Input::get('email'))){
-       		return Redirect::to('/forget-pas')->with('message','Data is empty,please input your email account'); 
+       		return Redirect::to('forget-pas')->with('message','Data is empty,please input your email account'); 
        } else {
        		$data = DB::table('login')->where('email','=',Input::get('email'))->get();
        		if(empty($data)){
-       			return Redirect::to('/forget-pas')->with('message','Your account can not find');
+       			return Redirect::to('forget-pas')->with('message','Your account can not find');
        	} else {
        			$reset_key = md5(Input::get('email').date('YMDHIS'));
 				$data = array(
@@ -233,7 +238,7 @@ class UserController extends Controller
                 );
     				$this->send_email_using_3rd_party($template_id, $to, $subject, $message_data_container);
 				
-				return Redirect::to('login/')->with('message','Reset key has been send');
+				return Redirect::to('/')->with('message','Reset key has been send');
        		}
 	   }
    }
@@ -258,25 +263,33 @@ class UserController extends Controller
    
    public function picUser(){
 			
+		$cekLogin = $this->cekLogin();	
+		if($cekLogin!="") return $cekLogin;
+		
 		$pic = login::find(Auth::user()->id);
-		return View::make('/user/dp_change', compact('pic'));
+		return View::make('/user/changepic', compact('pic'));
 	}
 	
 	public function picProcess(Request $request){
 	   $file = $request->file('pic');
-	
-       $data = array(
-       		'pic'				=> $file->getClientOriginalName()
-       );
-   		
-		$old_image = DB::table('login')->select('pic')->where('id','=',Auth::user()->id)->get();
 		
-   		$file->move(public_path().'/img',$file->getClientOriginalName());	
-		file::delete(public_path().'/img/'.$old_image[0]->pic);
+		if(empty($file)){
+			return Redirect::to('pic-user')->with('message','Please, Insert Your Photo.');
+		} else {
 		
-		DB::table('login')->where('id','=',Input::get('id'))->update($data);
-		// return $data;
-		return Redirect::to('user')->with('message','Photo Has Ben Uploaded');
+	       $data = array(
+	       		'pic'				=> $file->getClientOriginalName()
+	       );
+	   		
+			$old_image = DB::table('login')->select('pic')->where('id','=',Auth::user()->id)->get();
+			
+	   		$file->move(public_path().'/img',$file->getClientOriginalName());	
+			file::delete(public_path().'/img/'.$old_image[0]->pic);
+			
+			DB::table('login')->where('id','=',Input::get('id'))->update($data);
+			// return $data;
+			return Redirect::to('user')->with('message','Photo Has Ben Uploaded');
+		}
 	}
 	
 	public function readData()
@@ -284,8 +297,45 @@ class UserController extends Controller
 	   	$this->cekLogin();
 			
 	   	$siswa=DB::table('siswa')->get();
-	   	return View::make('user/user_read', compact('siswa'));
+	   	return View::make('admin/user_read', compact('siswa'));
 	   	
 	   
    }
+   
+   public function readUser()
+   {
+	   	$cekLogin = $this->cekLogin();	
+		if($cekLogin!="") return $cekLogin;
+			
+	   	$siswa=DB::table('siswa')->get();
+	   	return View::make('user/read_user', compact('siswa'));
+	   	
+	   
+   }
+   
+   public function userPro(){
+   		return View::make('user/profileuser');
+   }
+   
+   public function send_email_using_3rd_party($template_id, $email, $subject, $message_data_container, $email_cc=""){
+        $json_string = array(
+          'to' => array($email),'sub' => $message_data_container,'category' => 'test_category',
+          "filters" => array("templates" => array("settings" => array("enable" => 1,"template_id" => $template_id))));
+        $params = array(
+            'api_user'  => 'workforce.id','api_key'=> 'pass@word1','x-smtpapi' => json_encode($json_string),
+            'to'        => $email,'cc'  => $email_cc, 'subject'   => $subject,
+            'html'      => " ",'text'=> " ",'from'=> 'no-reply@indosystem.com');
+			
+        $request =  'https://api.sendgrid.com/api/mail.send.json';
+        $session = curl_init($request);
+        curl_setopt ($session, CURLOPT_POST, true);
+        curl_setopt ($session, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($session, CURLOPT_HEADER, false);
+        curl_setopt($session, CURLOPT_SSLVERSION, 6);
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($session);
+        curl_close($session);  
+        if(!isset($response->errors)) return true;
+        else return $response->message;
+    }
 }

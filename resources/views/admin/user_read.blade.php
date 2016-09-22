@@ -22,13 +22,13 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             
-            @include('sidebar')
+            @include('admin/sidebar')
 
           </div>
         </div>
 
 
-        @include('topmenu')
+        @include('admin/topmenu')
 
 
         <!-- page content -->
@@ -46,14 +46,8 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2> List Siswa 
-					<small>
-						@if(Session::has('message'))
-						 <span>{{ Session::get('message') }}</span>
-						@endif
-					</small>
-					
-                    </h2>
+                    <h2> List Siswa </h2>
+                    
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link">&nbsp;</a></li>
                       <li><a class="collapse-link">&nbsp;</a></li>
@@ -68,7 +62,11 @@
                     <p class="text-muted font-13 m-b-30">
                       DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
                     </p>
-                    <table id="datatable" class="table table-striped table-bordered">
+                    @if(Session::has('message'))
+					 <span>{{ Session::get('message') }}</span>
+					@endif
+                    <a href="{{ URL('data-sis')}}" class="btn btn-primary"> Add Data Siswa </a>
+                  	<table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           	<th> No </th>
@@ -89,8 +87,9 @@
 			     		<td>{{$data2 -> kelas}}</td>
 			      		<td> <a href="delete/{{ $data2->id}}" onclick="return confirm('Are your sure want delete this data?')"> Delete </a> ||
 				      			 <a href="form-edit/{{ $data2->id}}"> Edit </a>
-				      		</td>
+				    	</td>
 				  	</tr>
+				  	
 				  	@endforeach
                       <!-- /page content -->
         

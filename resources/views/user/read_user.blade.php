@@ -22,13 +22,13 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             
-            @include('admin/sidebar')
+            @include('/user/sidebar')
 
           </div>
         </div>
 
 
-        @include('admin/topmenu')
+        @include('/user/topmenu')
 
 
         <!-- page content -->
@@ -46,7 +46,8 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Default Example <small>Users</small></h2>
+                    <h2> List Siswa </h2>
+                    
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link">&nbsp;</a></li>
                       <li><a class="collapse-link">&nbsp;</a></li>
@@ -58,36 +59,29 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    @if(Session::has('message'))
-			 		 <span>{{ Session::get('message') }}</span>
-				    @endif
-                  
+                    <p class="text-muted font-13 m-b-30">
+                      DataTables has most features enabled by default, so all you need to do to use it with your own tables is to call the construction function: <code>$().DataTable();</code>
+                    </p>
                     <table id="datatable" class="table table-striped table-bordered">
                       <thead>
                         <tr>
                           	<th> No </th>
 				  			<th> ID </th>
-				  			<th> Username </th>
-				  			<th> Email</th>
-				  			<th> Hak Akses </th>
-				  			<th> Activation Status</th>
-				  			<!-- <th> Image </th> -->
-				  			<th> Other </th>
-                        </tr>
+				  			<th> Name </th>
+				  			<th> Alamat</th>
+				  			<th> Kelas </th>
+				  		</tr>
          			</thead>
          			<?php $ni=1; ?>
-	  				@foreach($login as $data2)
+	  				@foreach($siswa as $data2)
 	  				<tr>
 				      	<td>{{$ni++}}</td>
 				      	<td>{{$data2 -> id}}</td>
-				  		<td>{{$data2-> username}}</td>
-			     		<td>{{$data2 -> email}}</td>
-			     		<td>{{$data2 -> hak_akses}}</td>
-			      		<td>{{$data2 -> activation_status}}</td>
-				      		<td> <a href="admin-change/{{ $data2->id}}"> Change Password </a> ||
-				      			 <a href="edit-user/{{ $data2->id}}"> Edit </a>
-				      		</td>
-				  	</tr>
+				  		<td>{{$data2-> nama}}</td>
+			     		<td>{{$data2 -> alamat}}</td>
+			     		<td>{{$data2 -> kelas}}</td>
+			      	</tr>
+				  	
 				  	@endforeach
                       <!-- /page content -->
         

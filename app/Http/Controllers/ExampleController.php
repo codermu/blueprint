@@ -42,4 +42,9 @@ class Examplecontroller extends Controller
         return View::make('gentelella/outbox');
    }
 
+   public function profile()
+   {
+        return View::make('gentelella/profile');
+   }
+
 }

@@ -45,7 +45,7 @@
               </div>
               <div>
                 <input type="submit" class="btn btn-default submit"  value="Log in">
-                <a class="reset_pass" href="#">Lost your password?</a>
+                <a class="reset_pass" href="{{ URL('forget-pas')}}" class="btn btn-default submit">Lost your password?</a>
               </div>
 
               <div class="clearfix"></div>
@@ -59,7 +59,7 @@
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                  <h1> Indosystem CMS </h1>
                   <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
                 </div>
               </div>
@@ -79,8 +79,8 @@
                 <input type="email"name="email" class="form-control" placeholder="Email" required="" />
               </div>
               <div>
-              	Choose Your Image
-                <input type="file" name="pic" class="form-control" required="" /> <br>
+              	<!-- Choose Your Image
+                <input type="file" name="pic" class="form-control" required="" /> <br> -->
               </div>
               <div>
                 <input type="password" name="password" class="form-control" placeholder="Password" required="" />

@@ -24,12 +24,12 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
               
-            @include('sidebar')
+            @include('admin/sidebar')
 
           </div>
         </div>
 
-        @include('topmenu')
+        @include('admin/topmenu')
         
         <!-- page content -->
         <div class="right_col" role="main">
@@ -54,8 +54,10 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-
-                    <!-- start form for validation -->
+                  	@if(Session::has('message'))
+						<span>{{ Session::get('message') }}</span>
+					@endif
+					<!-- start form for validation -->
                     <form id="demo-form" method="post" action="{{url('/user-process')}}" data-parsley-validate>
                       {{csrf_field()}}
                       <input type="hidden" name="id" value="{{$login->id}}">

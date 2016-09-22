@@ -29,9 +29,7 @@ class AdminController extends Controller
    {
    		$login_status = Session::get('login_status');
 		if ($login_status=='loggedout'){
-       		return redirect('/')->with('message','Please Login Again.');	
-	  } else {
-	  	return "";
+       		return redirect('/')->with('message','Login Please.');	
 	  }
        
    }
@@ -45,18 +43,6 @@ class AdminController extends Controller
        		return Redirect::to('/user')->with('message','You Cant Acces Thats Page.');
 	   		die();	
 	  }
-   }
-   
-   public function addData()
-   {
-       $data = array(
-	   	'nama' => Input::get('nama'),
-	   	'alamat' => Input::get('alamat'),
-	   	'kelas' => Input::get('kelas'),
-	   );
-	   
-	   DB::table('siswa')->insert($data);
-	   return Redirect::to('/read')->with('message','Input data success');
    }
    
    public function readData()
@@ -73,6 +59,7 @@ class AdminController extends Controller
    
    public function login()
    {
+		
        if(Auth::attempt(['username' => Input::get('username'),'password' =>Input::get('password')]))
 	   {
 	   	if (Auth::user()->activation_status=="notactive"){
@@ -82,9 +69,9 @@ class AdminController extends Controller
 	   		Session::put('login_status', 'loggedin');
 	   		return  Redirect::to('/read');
 			
-	   	} else {
+	   	} else if (Auth::user()->hak_akses=="user"){
 			Session::put('login_status', 'loggedin');
-	   		return Redirect::to('/user');
+	   		return Redirect::to('user');
 		}
 	   }
 		else {
@@ -111,7 +98,7 @@ class AdminController extends Controller
 		if (Auth::user()->activation_status=='banned'){
 	   		return Redirect::to('user/block');
 		}
-       		return View::make('/user'); 
+       		return View::make('user/profileuser'); 
    		}
      public function changePass()
 	{
@@ -182,26 +169,4 @@ class AdminController extends Controller
 			
 	   		return Redirect::to('/read')->with('message','User has been changed');
 	}
-	
-	public function send_email_using_3rd_party($template_id, $email, $subject, $message_data_container, $email_cc=""){
-        $json_string = array(
-          'to' => array($email),'sub' => $message_data_container,'category' => 'test_category',
-          "filters" => array("templates" => array("settings" => array("enable" => 1,"template_id" => $template_id))));
-        $params = array(
-            'api_user'  => 'workforce.id','api_key'=> 'pass@word1','x-smtpapi' => json_encode($json_string),
-            'to'        => $email,'cc'  => $email_cc, 'subject'   => $subject,
-            'html'      => " ",'text'=> " ",'from'=> 'no-reply@indosystem.com');
-			
-        $request =  'https://api.sendgrid.com/api/mail.send.json';
-        $session = curl_init($request);
-        curl_setopt ($session, CURLOPT_POST, true);
-        curl_setopt ($session, CURLOPT_POSTFIELDS, $params);
-        curl_setopt($session, CURLOPT_HEADER, false);
-        curl_setopt($session, CURLOPT_SSLVERSION, 6);
-        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($session);
-        curl_close($session);  
-        if(!isset($response->errors)) return true;
-        else return $response->message;
-    }
 }
