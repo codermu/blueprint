@@ -22,7 +22,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             
-            @include('user/sidebar')
+            @include('user/onsidebar')
 
           </div>
         </div>
@@ -36,9 +36,15 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>User Profile</h3>
+                
               </div>
-
+              <div class="row">
+              	<div class="col-md12 col-sm12 col-xs-12">
+              		<div class="alert alert-warning">
+					<?php echo Session::get('message') ; ?>
+					</div>
+				</div>
+			  </div>
             </div>
             
             <div class="clearfix"></div>
@@ -47,7 +53,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>User Report <small>Activity report</small></h2>
+                  	<h2>User Profile</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -71,22 +77,21 @@
 			              		}
 							?>
                           <img class="img-responsive avatar-view" src=" {{ $foto }}" alt="Avatar" title="Change the avatar">
-
-                          
-                      <h3>{{Auth::user()->username}}</h3>
-
-                      <ul class="list-unstyled user_data">
+						<p></p>
+						<h2> {{Auth::user()->username}} </h2>
+					 <ul class="list-unstyled user_data">
                       	<li><i class="fa fa-map-marker user-profile-icon"></i> Indonesia
                         </li>
 
                         <li>
                           <i class="fa fa-briefcase user-profile-icon"></i> {{Auth::user()->email}}
                         </li>
+                        <form method="post" action="{{URL('send-key')}}">
+                        	 {{csrf_field()}}
+                        	  <input type="hidden" name="id" value="{{Auth::user()->id}}">
+                      		<input type="submit" name="key" value="Resend Activation Key">
+                      	</form>
                      </ul>
-
-                      <a href="{{URL('pic-user')}}" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>change profile photo</a>
-                      <a href="{{URL('change-password')}}" class="btn btn-success">Change Password</a>
-                      <br />
                       
 
                     </div>

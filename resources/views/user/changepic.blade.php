@@ -63,7 +63,15 @@
                         <!-- end of image cropping -->
                         <div id="crop-avatar">
                           <!-- Current avatar -->
-                          <img class="img-responsive avatar-view" src=" {{ '/img/'.Auth::user()->pic }}" alt="Avatar" title="Change the avatar">
+                          	<?php
+                          	if(empty(Auth::user()->pic)){
+			              			$foto = asset("img/avatar.png");
+			              		} else {
+			              			$foto = '/img/'.Auth::user()->pic ;
+			              		}
+							?>
+                          <img class="img-responsive avatar-view" src=" {{ $foto }}" alt="Avatar" title="Change the avatar">
+                          <p></p>
 
                           <!-- Cropping modal -->
                           <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">

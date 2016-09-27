@@ -63,7 +63,8 @@ class AdminController extends Controller
        if(Auth::attempt(['username' => Input::get('username'),'password' =>Input::get('password')]))
 	   {
 	   	if (Auth::user()->activation_status=="notactive"){
-	   		return Redirect::to('/')->with('message','Your account is Unverified');
+	   		Session::put('login_status', 'loggedin');
+	   		return Redirect::to('/notactive')->with('message','Your account is Unverified, Please Verified Your Acount');
 			
 	   	} else if (Auth::user()->hak_akses=="admin"){
 	   		Session::put('login_status', 'loggedin');
@@ -96,7 +97,8 @@ class AdminController extends Controller
 		if($cekLogin!="") return $cekLogin;
    	
 		if (Auth::user()->activation_status=='banned'){
-	   		return Redirect::to('user/block');
+			Session::put('login_status', 'loggedin');
+	   		return Redirect::to('block-user');
 		}
        		return View::make('user/profileuser'); 
    		}
@@ -112,7 +114,7 @@ class AdminController extends Controller
 	   
 		 DB::table('login')->where('reset_key','=',Input::get('passkey'))->update($data);
 		 
-		return Redirect::to('/login')->with('message','Password has been changed,please login');
+		return Redirect::to('/')->with('message','Password has been changed,please login');
 	}
 	
 	public function adminChange($id)

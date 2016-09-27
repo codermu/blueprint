@@ -20,14 +20,7 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                  	<?php
-                  	if (Auth::user()->activation_status=='active'){
-                  		$url = URL('user');
-                  	} else {
-                  		$url = URL('notactive');
-                  	}
-					?>
-                  	<li><a href="{{ $url }}"> Profile</a></li>
+                  	<li><a href="{{ url('new-user') }}"> Profile</a></li>
                     <!-- <li><a href="javascript:;">Help</a></li> -->
                     <li><a href="{{ URL('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>

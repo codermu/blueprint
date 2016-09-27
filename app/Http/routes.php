@@ -28,11 +28,11 @@ Route::get('delete/{id}','UserController@deleteData');
 Route::get('form-edit/{id}','UserController@editData');
 //Route::get('form-edit/{id}','AdminController@editData');
 Route::post('edit-data','UserController@editDataProcess');
-
+Route::get('register','UserController@register');
 Route::post('addLog','UserController@addLog');
-Route::get('register', function () {
-	 return view('register');
-});
+Route::get('new-user','UserController@newUser');
+Route::get('notactive','UserController@notActive');
+Route::post('send-key','UserController@sendKey');
 	
 Route::post('login', 'AdminController@login');
 Route::get('user', 'AdminController@userHomePage');

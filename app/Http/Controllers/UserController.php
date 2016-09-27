@@ -63,6 +63,26 @@ class UserController extends Controller
 	   	return View::make('user/profileuser')-> with('siswa',$data);
    }
    
+   public function register()
+   {
+       return view::make('user/register');
+   }
+   
+   public function newUser(){
+   	$cekLogin = $this->cekLogin();	
+		if($cekLogin!="") return $cekLogin;
+		
+   	return view::make('user/new_user');
+   }
+   
+   public function notActive(){
+   	$cekLogin = $this->cekLogin();	
+		if($cekLogin!="") return $cekLogin;
+	
+   	$login=DB::table('login')->get();
+   	return view::make('user/notactive_user',compact('login'));
+   }
+   
    public function addLog(Request $request)
    {
    	   $this->validate($request, [
@@ -76,7 +96,6 @@ class UserController extends Controller
 	
 	   $today = date("Y-m-d H:i:s");
 	   $next_week_date = date("Y-m-d H:i:s", strtotime("+1 week"));
-	   $next_time = date("Y-m-d H:i:s", strtotime('+12 hours'));
 	   // return $today;
 	   // return $next_week_date;
        $activation_key = md5(date("Y-m-d H:i:s"));
@@ -89,7 +108,7 @@ class UserController extends Controller
        		'activation_status'  => 'notactive',
        		//'pic'				 => $file->getClientOriginalName(),
        		'activation_date_exp'=> $next_week_date,
-       		'reset_date_exp'	 => $next_time
+       		// 'reset_date_exp'	 => $next_time
        		
        		
    );
@@ -100,7 +119,7 @@ class UserController extends Controller
 	DB::table('login')->insert($data);
    
    	$root_url='http://festiware.com';
-	$activation_link= $root_url. '/activate/'. $activation_key ;
+	$activation_link= $root_url.'/activate/'.$activation_key ;
     $to             = Input::get('email');
     $subject        = 'festiware account activation';
     $template_id    = "25ef503b-f23a-47a3-8795-66b0a7bc0964";
@@ -111,25 +130,69 @@ class UserController extends Controller
                 );
     $this->send_email_using_3rd_party($template_id, $to, $subject, $message_data_container);
 	
-	return Redirect::to('/')->with('message','Sign Up Success,please active your account');
+	Session::set('message','Your Account Has Been Created, Check Your Email And Verified Your Account ');
+	Session::set('user_fullname',Input::get ('username'));
+	Session::set('user_email',Input::get ('email'));
+	
+	Session::put('login_status', 'loggedin');
+	return Redirect::to('new-user');
    }
 
 	public function activate($activation_key="")
    {
+   		$today = date("Y-m-d H:i:s");
    		if (empty($activation_key)) {
-			   return Redirect::to ('/login')-> with('message', 'Please take your Activation key on your Email.');
-		   }else{	
+			   return Redirect::to ('/')-> with('message', 'Please take your Activation key on your Email.');
+		   }else{
+		   	$exp1=DB::table('login')->where('activation_key','=',$activation_key)->get();
+			// return $exp1;
+			$next1=$exp1[0]->activation_date_exp;
+			$next1 = strtotime($next1);
+			// return strtotime($exp1[0]->activation_date_exp);
+			$now1=strtotime($today);
+
+		if($now1 > $next1) {
+				return Redirect::to('/')->with('message','Your activation key has been expired, please contact our Administrator or simply create your new account again');
+		
+			}else {	
 		   		$data = DB::table('login')->where('activation_key','=',$activation_key)->get();
 		       		if(empty($data)){
-		       			return Redirect::to('/login')->with ('message', 'Activation keys can not be found') ;
+		       			return Redirect::to('/')->with ('message', 'Activation keys can not be found') ;
 		       		} else {
 		       			$data = array(
 						'activation_status' => 'active'
 						);
 		   				DB::table('login')->where('activation_key','=',$activation_key)->update($data);	
-		   				return Redirect::to('/login')->with ('message', 'Your account has been Activate,please Login') ;
+		   				return Redirect::to('/')->with ('message', 'Your account has been Activate,please Login') ;
 		      	 }
 		   }
+   }
+   }
+
+   public function sendKey(){
+   		$activation_key = md5(date("Y-m-d H:i:s"));
+		$next_week_date = date("Y-m-d H:i:s", strtotime("+1 week"));
+       $data = array(
+       		'activation_key' 	 => $activation_key,
+       		'activation_date_exp' => $next_week_date
+   );
+   
+   	
+	   
+	DB::table('login')->where('id','=',Input::get('id'))->update($data);
+   
+   	$root_url='http://festiware.com';
+	$activation_link= $root_url.'/activate/'.$activation_key ;
+    $to             = Input::get('email');
+    $subject        = 'festiware account activation';
+    $template_id    = "25ef503b-f23a-47a3-8795-66b0a7bc0964";
+    $message_data_container  = 
+                array(
+                    '::fullname'=>array(Auth::user()->email),
+                    '::activation_link'=>array($activation_link)
+                );
+    $this->send_email_using_3rd_party($template_id, $to, $subject, $message_data_container);
+	return Redirect::to('notactive')->with('message','Activation Key Has Been Send');
    }
    
    public function addUser(){
@@ -180,9 +243,11 @@ class UserController extends Controller
 				return Redirect::to('/change-password/')->with('message','Old password is wrong');
 			}
 			
+			
 		    if(Input::get('newpas')==Input::get('repas')){
 			   $data = array(
-		   		'password' => bcrypt(Input::get('newpas'))
+		   		'password' => bcrypt(Input::get('newpas')),
+				
 		   		);
 		   
 	  	    DB::table('login')->where('id','=',$id_user)->update($data);
@@ -197,8 +262,11 @@ class UserController extends Controller
 
    public function blockUser()
    {
-   		$this->cekLogin();
+   	$cekLogin = $this->cekLogin();	
+	if($cekLogin!="") return $cekLogin;
+   	
    	if (Auth::user()->activation_status=="banned"){
+   		Session::put('login_status', 'loggedin');
    		return View::make('user/block');
    	}
 		return Redirect::to('/profileuser');
@@ -220,9 +288,12 @@ class UserController extends Controller
        			return Redirect::to('forget-pas')->with('message','Your account can not find');
        	} else {
        			$reset_key = md5(Input::get('email').date('YMDHIS'));
+				$next_time = date("Y-m-d H:i:s", strtotime('+12 hours'));
 				$data = array(
-			   			'reset_key' => $reset_key
+			   			'reset_key' => $reset_key,
+			   			'reset_date_exp'	 => $next_time
 			    		);
+				
 			   
 		       	DB::table('login')->where('email','=',Input::get('email'))->update($data);
 				
@@ -238,7 +309,7 @@ class UserController extends Controller
                 );
     				$this->send_email_using_3rd_party($template_id, $to, $subject, $message_data_container);
 				
-				return Redirect::to('/')->with('message','Reset key has been send');
+				return Redirect::to('/')->with('message','Reset key has been sent,please check your email');
        		}
 	   }
    }
@@ -246,20 +317,34 @@ class UserController extends Controller
 
    public function resetPass($reset_key="")
    {
+   		$today = date("Y-m-d H:i:s");
    		if (empty($reset_key)){
-   			return Redirect::to('login')->with('message','Please Input Your Reset Key');
+   			return Redirect::to('/')->with('message','Please Input Your Reset Key');
    		} else {
+   			$exp=DB::table('login')->where('reset_key','=',$reset_key)->get();
+			
+			$next=$exp[0]->reset_date_exp;
+			$next = strtotime($next);
+			// return strtotime($exp[0]->reset_date_exp);
+			$now=strtotime($today);
+			
+			// return $next . ' '. $now;
+		if($now > $next) {
+				return Redirect::to('/forget-pas')->with('message','Your forget password key has been expired, please retry the process to get the key.');
+		
+			}else {
+				
 	   		$key = DB::table('login')->where('reset_key','=',$reset_key)->get();
 	       	if(!empty($key)){
-	       		// $date_int = strtotime($key[0]->created_at);
-				// var_dump($date_int);
-				
-	   			return View::make('ganti_password', compact('key')); 
+	   			return View::make('user.ganti_password', compact('key')); 
 		} else {
-		   		return Redirect::to('login')->with('message','Can not find the Key');
+		   		return Redirect::to('/')->with('message','Can not find the Key');
 		   	}
-		}	
+		}
+		
+		}
    }
+   
    
    public function picUser(){
 			

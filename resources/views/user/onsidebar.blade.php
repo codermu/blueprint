@@ -1,5 +1,5 @@
             <div class="navbar nav_title" style="border: 0;">
-              <a href="read" class="site_title">Indosystem CMS</span></a>
+              <h3 class="site_title"> Indosystem CMS </h3>
             </div>
 
             <div class="clearfix"></div>
@@ -18,6 +18,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome</span>
+                
                 <h2>{{Auth::user()->username}}</h2>
               </div>
             </div>
@@ -32,8 +33,6 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i>Menu <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="{{ URL('user-home')}}"> Profile </a></li>
-                      <li><a href="{{ URL('read-user')}}"> Siswa </a></li>
                       <li><a href="{{ URL('logout')}}">Out</a></li>
                     </ul>
                   </li>

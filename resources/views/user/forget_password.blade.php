@@ -41,8 +41,8 @@
 				</div>
               <h1>Please Enter Your Email</h1>
               <div>
-              	<input type="text" name="email" id="email" placeholder="Email" class="form-control" > <br> <br>
-				<input type="submit" value="Forget password" class="btn btn-default submitr"/>
+              	<input type="text" name="email" id="email" placeholder="Email" class="form-control">
+				<input type="submit" value="Forget password" class="btn btn-default submit" style=" position:relative; left:20%;"/>
               </div>
 
               <div class="clearfix"></div>

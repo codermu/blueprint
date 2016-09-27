@@ -11,7 +11,7 @@
               </div>
               <div class="profile_info">
                 <span>Welcome
-              	 <h2>{{Auth::user()->username}}</h2>
+              	 <h2>aw</h2>
                 </span>
               </div>
             </div>
