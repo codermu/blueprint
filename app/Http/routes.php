@@ -26,7 +26,6 @@ Route::get('user_read','UserController@readData');
 Route::get('read-user','UserController@readUser');
 Route::get('delete/{id}','UserController@deleteData');
 Route::get('form-edit/{id}','UserController@editData');
-//Route::get('form-edit/{id}','AdminController@editData');
 Route::post('edit-data','UserController@editDataProcess');
 Route::get('register','UserController@register');
 Route::post('addLog','UserController@addLog');
@@ -59,9 +58,6 @@ Route::post('user-process','AdminController@userProcess');
 Route::get('pic-user','UserController@picUser');
 Route::post('pic-proc','UserController@picProcess');
 Route::get('user-home','UserController@userPro');
-// Route::get('template', function () {
-	 // return view('template/index');
-// });
 Route::get('/gentelella/index','ExampleController@index');
 Route::get('/gentelella/blank','ExampleController@blank');
 Route::get('/gentelella/manage','ExampleController@manage');

@@ -106,15 +106,11 @@ class UserController extends Controller
        		'hak_akses' 		 => 'user',
        		'activation_key' 	 => $activation_key,
        		'activation_status'  => 'notactive',
-       		//'pic'				 => $file->getClientOriginalName(),
        		'activation_date_exp'=> $next_week_date,
-       		// 'reset_date_exp'	 => $next_time
        		
        		
    );
    
-   	
-	//$file->move(public_path().'/img',$file->getClientOriginalName());
 	   
 	DB::table('login')->insert($data);
    
@@ -150,7 +146,7 @@ class UserController extends Controller
 			$next1 = strtotime($next1);
 			// return strtotime($exp1[0]->activation_date_exp);
 			$now1=strtotime($today);
-
+ 
 		if($now1 > $next1) {
 				return Redirect::to('/')->with('message','Your activation key has been expired, please contact our Administrator or simply create your new account again');
 		
@@ -325,10 +321,7 @@ class UserController extends Controller
 			
 			$next=$exp[0]->reset_date_exp;
 			$next = strtotime($next);
-			// return strtotime($exp[0]->reset_date_exp);
 			$now=strtotime($today);
-			
-			// return $next . ' '. $now;
 		if($now > $next) {
 				return Redirect::to('/forget-pas')->with('message','Your forget password key has been expired, please retry the process to get the key.');
 		
@@ -379,7 +372,8 @@ class UserController extends Controller
 	
 	public function readData()
    {
-	   	$this->cekLogin();
+	   	$cekLogin = $this->cekLogin();	
+		if($cekLogin!="") return $cekLogin;
 			
 	   	$siswa=DB::table('siswa')->get();
 	   	return View::make('admin/user_read', compact('siswa'));
